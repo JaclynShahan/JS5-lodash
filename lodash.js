@@ -406,7 +406,7 @@ const purchases = [
 const purchasesByMonth = _.groupBy(purchases, 'month') // Use groupBy to group the purchases by the month that they were made.
 
 // Bonus Points
-const totalByMonth = 0; // Use the grouped purchasesByMonth and reduce to create a totalByMonth object.
+const totalByMonth = _.groupBy(purchases.purchasesByMonth, 'price')// Use the grouped purchasesByMonth and reduce to create a totalByMonth object.
 
 // memoize
 //  Memoize lets us take a function that takes a lot of time to run, and cache (or memoize)
@@ -422,11 +422,27 @@ function slowFibonnaci(n) {
   return n < 2 ? n : slowFibonnaci(n - 1) + slowFibonnaci(n - 2);
 }
 
+
+const fastFibonnaci = (fn) => {
+  let cache = {};
+  return (...args) => {
+    let n = args[0]
+    if (n in cache) {
+      console.log('Fetch from cache');
+      return cache[n]
+    }
+    else {
+      console.log('calculate result')
+      let result = fn(n)
+      cache[n] = result
+      return result
+    }
+  }
+}
 // If you have a fast computer,
 // you may need to increase the number of trials to have the slowFibonnaci function take longer.
 // If you have a slow computer, you may want to turn down the number in case it's
 // taking a really long time.
-
 // console.time('name of stopwatch') starts a stopwatch named whatever you
 // give it as a parameter.
 // You can then call console.timeEnd('name of stopwatch') to stop the stopwatch,
@@ -437,12 +453,14 @@ function slowFibonnaci(n) {
 // millisecond keep increasing in increments of 5 until it's
 // taking a few seconds to complete.
 
+
+
 //When ready to test uncomment the 3 lines below.
 
 let slowN = 30;
-// console.time('slowFibonnaci:' + slowN)
-// console.log(slowFibonnaci(slowN));
-// console.timeEnd('slowFibonnaci:' + slowN);
+console.time('slowFibonnaci:' + slowN)
+console.log(slowFibonnaci(slowN));
+console.timeEnd('slowFibonnaci:' + slowN);
 
 let fastN = 1000;
 
@@ -450,9 +468,9 @@ let fastFibonnaci = 0; // use memoize to create a fast fibonnaci.  Use the same
 // recursve structure that the slowFibonnaci is using, but have it be memoized
 // so that it'll remeber the previous times it's been called and increase the
 
-// console.time('fastFibonnaci:' + fastN)
-// console.log(fastFibonnaci(fastN));
-// console.timeEnd('fastFibonnaci:' + fastN)
+console.time('fastFibonnaci:' + fastN)
+console.log(fastFibonnaci(fastN));
+console.timeEnd('fastFibonnaci:' + fastN)
 
 // We can also use memoize on axios calls so that we only need to make the
 // request to the server once.
